@@ -1,0 +1,300 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* CodeDex Retro Terminal Theme */
+  --background: oklch(0.08 0.01 145);
+  --foreground: oklch(0.85 0.18 142);
+  --card: oklch(0.12 0.015 145);
+  --card-foreground: oklch(0.85 0.18 142);
+  --popover: oklch(0.1 0.012 145);
+  --popover-foreground: oklch(0.85 0.18 142);
+  --primary: oklch(0.75 0.22 142);
+  --primary-foreground: oklch(0.08 0.01 145);
+  --secondary: oklch(0.18 0.02 145);
+  --secondary-foreground: oklch(0.75 0.18 142);
+  --muted: oklch(0.15 0.015 145);
+  --muted-foreground: oklch(0.55 0.12 142);
+  --accent: oklch(0.65 0.2 85);
+  --accent-foreground: oklch(0.08 0.01 145);
+  --destructive: oklch(0.55 0.22 25);
+  --destructive-foreground: oklch(0.95 0.02 25);
+  --border: oklch(0.35 0.12 142);
+  --input: oklch(0.15 0.02 145);
+  --ring: oklch(0.75 0.22 142);
+  --chart-1: oklch(0.75 0.22 142);
+  --chart-2: oklch(0.65 0.2 85);
+  --chart-3: oklch(0.6 0.18 200);
+  --chart-4: oklch(0.7 0.15 300);
+  --chart-5: oklch(0.55 0.22 25);
+  --radius: 0.25rem;
+  
+  /* Custom Retro Colors */
+  --terminal-green: oklch(0.75 0.22 142);
+  --terminal-green-dim: oklch(0.45 0.15 142);
+  --terminal-amber: oklch(0.7 0.18 85);
+  --crt-glow: oklch(0.75 0.22 142 / 0.3);
+  --scanline: oklch(0 0 0 / 0.15);
+}
+
+@theme inline {
+  --font-sans: 'VT323', 'Courier New', monospace;
+  --font-mono: 'VT323', 'Courier New', monospace;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 2px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 2px);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* CRT Scanline Effect */
+.crt-scanlines {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    var(--scanline) 2px,
+    var(--scanline) 4px
+  );
+  animation: scanlines 0.1s linear infinite;
+}
+
+@keyframes scanlines {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(4px); }
+}
+
+/* CRT Glow Effect */
+.crt-glow {
+  text-shadow: 
+    0 0 5px var(--terminal-green),
+    0 0 10px var(--terminal-green),
+    0 0 20px var(--crt-glow);
+}
+
+.crt-glow-amber {
+  text-shadow: 
+    0 0 5px var(--terminal-amber),
+    0 0 10px var(--terminal-amber),
+    0 0 20px oklch(0.7 0.18 85 / 0.3);
+}
+
+/* Retro Border */
+.retro-border {
+  border: 2px solid var(--terminal-green);
+  box-shadow: 
+    0 0 10px var(--crt-glow),
+    inset 0 0 20px oklch(0 0 0 / 0.5);
+}
+
+.retro-border-amber {
+  border: 2px solid var(--terminal-amber);
+  box-shadow: 
+    0 0 10px oklch(0.7 0.18 85 / 0.3),
+    inset 0 0 20px oklch(0 0 0 / 0.5);
+}
+
+/* Glitch Effect */
+@keyframes glitch {
+  0%, 100% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(-2px, -2px); }
+  60% { transform: translate(2px, 2px); }
+  80% { transform: translate(2px, -2px); }
+}
+
+.glitch-text {
+  animation: glitch 0.3s ease-in-out infinite;
+}
+
+.glitch-text:hover {
+  animation: glitch 0.1s ease-in-out infinite;
+}
+
+/* Typing Cursor */
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.typing-cursor::after {
+  content: '█';
+  animation: blink 1s step-end infinite;
+}
+
+/* Retro Button */
+.retro-button {
+  background: linear-gradient(180deg, var(--terminal-green) 0%, oklch(0.55 0.18 142) 100%);
+  color: var(--background);
+  border: 2px solid var(--terminal-green);
+  box-shadow: 
+    4px 4px 0 oklch(0.3 0.1 142),
+    0 0 10px var(--crt-glow);
+  transition: all 0.1s;
+}
+
+.retro-button:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 
+    2px 2px 0 oklch(0.3 0.1 142),
+    0 0 15px var(--crt-glow);
+}
+
+.retro-button:active {
+  transform: translate(4px, 4px);
+  box-shadow: 
+    0 0 0 oklch(0.3 0.1 142),
+    0 0 5px var(--crt-glow);
+}
+
+/* Progress Bar */
+.retro-progress {
+  background: var(--secondary);
+  border: 2px solid var(--terminal-green);
+  overflow: hidden;
+}
+
+.retro-progress-bar {
+  background: linear-gradient(90deg, 
+    var(--terminal-green) 0%,
+    oklch(0.85 0.22 142) 50%,
+    var(--terminal-green) 100%
+  );
+  background-size: 200% 100%;
+  animation: progressGlow 2s linear infinite;
+}
+
+@keyframes progressGlow {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Window Frame */
+.retro-window {
+  background: var(--card);
+  border: 3px solid var(--terminal-green);
+  box-shadow: 
+    0 0 20px var(--crt-glow),
+    inset 0 0 30px oklch(0 0 0 / 0.3);
+}
+
+.retro-window-header {
+  background: linear-gradient(90deg, var(--terminal-green), oklch(0.55 0.18 142));
+  padding: 0.5rem 1rem;
+  border-bottom: 2px solid var(--terminal-green);
+}
+
+/* Input Field */
+.retro-input {
+  background: oklch(0.05 0.01 145);
+  border: 2px solid var(--terminal-green-dim);
+  color: var(--terminal-green);
+  caret-color: var(--terminal-green);
+}
+
+.retro-input:focus {
+  border-color: var(--terminal-green);
+  box-shadow: 0 0 10px var(--crt-glow);
+  outline: none;
+}
+
+.retro-input::placeholder {
+  color: var(--terminal-green-dim);
+}
+
+/* Flicker Animation */
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  92% { opacity: 1; }
+  93% { opacity: 0.8; }
+  94% { opacity: 1; }
+  95% { opacity: 0.9; }
+  96% { opacity: 1; }
+}
+
+.crt-flicker {
+  animation: flicker 4s linear infinite;
+}
+
+/* Loading Dots */
+@keyframes loadingDots {
+  0%, 20% { content: '.'; }
+  40% { content: '..'; }
+  60% { content: '...'; }
+  80%, 100% { content: '....'; }
+}
+
+.loading-dots::after {
+  content: '.';
+  animation: loadingDots 1.5s steps(1) infinite;
+}
+
+/* Matrix Rain Effect Background */
+.matrix-bg {
+  background: 
+    radial-gradient(ellipse at center, oklch(0.12 0.02 145) 0%, var(--background) 70%);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--secondary);
+  border: 1px solid var(--terminal-green-dim);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--terminal-green);
+  border: 1px solid var(--terminal-green);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: oklch(0.85 0.22 142);
+}
+
+/* Selection */
+::selection {
+  background: var(--terminal-green);
+  color: var(--background);
+}
